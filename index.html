@@ -127,3 +127,60 @@ function updateCoins() {
 
 </body>
 </html>
+let balance = 1000;
+let betNumber = null;
+let betAmount = 0;
+let spinning = false;
+
+const numbers = [...Array(37).keys()];
+
+function placeBet() {
+    betNumber = document.getElementById("betNumber").value;
+    betAmount = Number(document.getElementById("betAmount").value);
+
+    if (betAmount > balance || betAmount <= 0) {
+        alert("❌ رصيد غير كافٍ");
+        return;
+    }
+    alert("✅ تم وضع الرهان");
+}
+
+function spin() {
+    if (spinning || betNumber === null) return;
+    spinning = true;
+
+    const wheel = document.getElementById("wheel");
+    const result = document.getElementById("result");
+
+    let deg = Math.floor(Math.random() * 360) + 1080;
+    wheel.style.transform = `rotate(${deg}deg)`;
+
+    setTimeout(() => {
+        let winningNumber = numbers[Math.floor(Math.random() * numbers.length)];
+
+        if (Number(betNumber) === winningNumber) {
+            let win = betAmount * 36;
+            balance += win;
+            result.textContent = `🎉 فزت! الرقم ${winningNumber} +${win}`;
+        } else {
+            balance -= betAmount;
+            result.textContent = `❌ خسرت! الرقم ${winningNumber}`;
+        }
+
+        document.getElementById("balance").textContent = balance;
+        spinning = false;
+    }, 4000)
+      #wheel {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 12px solid gold;
+    margin: 20px auto;
+    background: conic-gradient(
+        green 0deg 10deg,
+        red 10deg 180deg,
+        black 180deg 350deg,
+        green 350deg 360deg
+    );
+    transition: transform 4s cubic-bezier(.17,.67,.83,.67);
+}
