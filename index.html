@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Roulette World | روليت وورلد</title>
 
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial;
+  background: radial-gradient(circle, #0b6623, #013220);
+  color: #fff;
+  text-align: center;
+}
+
+header {
+  padding: 15px;
+  background: linear-gradient(90deg, #1c1c1c, #000);
+  color: gold;
+  font-size: 26px;
+  letter-spacing: 1px;
+}
+
+#balance {
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+#wheel {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  border: 12px solid gold;
+  margin: 30px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  background: conic-gradient(
+    red 0deg 120deg,
+    black 120deg 240deg,
+    green 240deg 360deg
+  );
+}
+
+button {
+  background: linear-gradient(45deg, gold, #c9a200);
+  border: none;
+  padding: 12px 25px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 30px;
+  margin: 10px;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+#result {
+  font-size: 22px;
+  margin-top: 15px;
+}
+
+select, input {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+}
+</style>
+</head>
+
+<body>
+
+<header>🎰 Roulette World | روليت وورلد</header>
+
+<div id="balance">💰 Coins: <span id="coins">1000</span></div>
+
+<div>
+  <label>Bet:</label>
+  <input type="number" id="bet" value="50" min="10">
+</div>
+
+<div id="wheel">🎲</div>
+
+<button onclick="spin()">SPIN | دوران</button>
+
+<div id="result"></div>
+
+<script>
+let coins = 1000;
+
+function spin() {
+  let bet = parseInt(document.getElementById("bet").value);
+
+  if (bet > coins) {
+    alert("رصيد غير كاف | Not enough coins");
+    return;
+  }
+
+  coins -= bet;
+  updateCoins();
+
+  let resultNumber = Math.floor(Math.random() * 37);
+
+  let win = Math.random() < 0.45; // نسبة فوز مدروسة
+
+  if (win) {
+    let winAmount = bet * 2;
+    coins += winAmount;
+    document.getElementById("result").innerText =
+      "🎉 فزت! | You Win: " + winAmount + " Coins | Number: " + resultNumber;
+  } else {
+    document.getElementById("result").innerText =
+      "❌ خسرت | You Lose | Number: " + resultNumber;
+  }
+
+  document.getElementById("wheel").innerText = resultNumber;
+  updateCoins();
+}
+
+function updateCoins() {
+  document.getElementById("coins").innerText = coins;
+}
+</script>
+
+</body>
+</html>
